@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cổng Thực Hành Giải Pháp 2: Trạm Deep Work & Kiểm Soát Dopamine Số</title>
+
+    <!-- Chỉ dùng duy nhất Tailwind CSS v3 chính thức -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- CSS CỨNG DỰ PHÒNG: Khóa cứng màu nền Header và Banner trên mọi thiết bị di động -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc !important;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        header.sticky {
+            background-color: rgba(15, 23, 42, 0.96) !important;
+            color: #94a3b8 !important;
+        }
+
+        section.bg-gradient-to-br {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #0f172a 100%) !important;
+            color: #ffffff !important;
+        }
+
+        #nav-pill {
+            background-color: #4f46e5 !important;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+
+<body class="text-slate-800 antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- THANH ĐẦU TRANG GHIM CỐ ĐỊNH (STICKY) VỚI SLIDING PILL CHỐNG GIẬT -->
+    <header
+        class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-md text-slate-400 py-3.5 px-4 sm:px-6 border-b border-slate-800 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-cyan-400 block">Dự án nghiên cứu THPT •
+                    Giải pháp 2</span>
+                <h1 class="font-bold text-white text-sm sm:text-base leading-tight mt-0.5">Cổng Thực Hành giải pháp 2:
+                    Trạm Deep Work & Kiểm Soát Dopamine Số</h1>
+            </div>
+
+            <!-- 3-Stage Stepper Navigation -->
+            <nav id="stepper-nav"
+                class="relative flex items-center gap-1 sm:gap-2 bg-slate-800/90 border border-slate-700 p-1.5 rounded-xl w-full lg:w-auto justify-between lg:justify-end overflow-x-auto">
+                <div id="nav-pill"
+                    class="absolute top-1.5 bottom-1.5 left-0 bg-indigo-600 rounded-lg shadow-sm transition-all duration-300 ease-out pointer-events-none z-0">
+                </div>
+
+                <a href="#stage-1" data-target="stage-1"
+                    class="step-link relative z-10 flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-white transition-colors duration-300 whitespace-nowrap">
+                    <span
+                        class="step-badge w-5 h-5 rounded-full bg-white text-indigo-700 flex items-center justify-center text-xs font-bold transition-colors duration-300">1</span>
+                    <span>Thiết lập Rào cản</span>
+                </a>
+
+                <i class="fa-solid fa-chevron-right text-slate-500 text-xs hidden sm:inline relative z-10"></i>
+
+                <a href="#stage-2" data-target="stage-2"
+                    class="step-link relative z-10 flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-300 hover:text-white transition-colors duration-300 whitespace-nowrap">
+                    <span
+                        class="step-badge w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold transition-colors duration-300">2</span>
+                    <span>Trạm Deep Work</span>
+                </a>
+
+                <i class="fa-solid fa-chevron-right text-slate-500 text-xs hidden sm:inline relative z-10"></i>
+
+                <a href="#stage-3" data-target="stage-3"
+                    class="step-link relative z-10 flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-300 hover:text-white transition-colors duration-300 whitespace-nowrap">
+                    <span
+                        class="step-badge w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold transition-colors duration-300">3</span>
+                    <span>Báo cáo Tập trung</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO BANNER -->
+    <section
+        class="bg-gradient-to-br from-indigo-950 via-indigo-900 to-slate-900 text-white py-10 sm:py-14 px-4 sm:px-6 relative overflow-hidden">
+        <div
+            class="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]">
+        </div>
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="max-w-3xl">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 text-xs sm:text-sm font-medium mb-4">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Kiểm soát xung động thông báo & Thiết lập môi trường học tập sâu</span>
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight mb-4">
+                    Cổng Thực Hành Giải Pháp 2: Trạm Deep Work & Nhật Ký Vượt Cám Dỗ
+                </h2>
+                <p class="text-indigo-100 text-sm sm:text-base leading-relaxed mb-6">
+                    Thay vì để điện thoại chi phối sự chú ý mỗi 5 phút, giải pháp này giúp bạn thiết lập "Lực ma sát số"
+                    (Digital Friction), ghi lại các cơn thèm kiểm tra mạng xã hội trong giờ học và rèn luyện chu kỳ tập
+                    trung sâu không gián đoạn.
+                </p>
+
+                <!-- Cụm nút Điền Báo Cáo & Điều hướng phụ -->
+                <div class="flex flex-wrap items-center gap-4 mb-8">
+                    <a href="#stage-3"
+                        class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl transition shadow-md flex items-center gap-2">
+                        <i class="fa-solid fa-file-pen"></i>
+                        <span>Điền Báo Cáo Cuối Ngày (21h30)</span>
+                    </a>
+                    <div class="flex items-center gap-4 text-xs sm:text-sm text-indigo-200">
+                        <a href="#stage-1" class="hover:text-white underline-offset-4 hover:underline transition">Xem
+                            Giai đoạn 1</a>
+                        <span>•</span>
+                        <a href="#stage-2" class="hover:text-white underline-offset-4 hover:underline transition">Xem
+                            Giai đoạn 2</a>
+                    </div>
+                </div>
+
+                <!-- Quick Overview Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 text-left">
+                    <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4">
+                        <div class="text-cyan-300 font-bold text-xs uppercase tracking-wider mb-1">Giai đoạn 1 • Trước
+                            Giờ Học</div>
+                        <div class="font-semibold text-base mb-1">Thiết Lập Rào Cản Số</div>
+                        <p class="text-xs text-indigo-200">Nhận diện các tác nhân gây nghiện Dopamine và tạo kịch bản
+                            cách ly thiết bị bằng AI.</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4">
+                        <div class="text-emerald-400 font-bold text-xs uppercase tracking-wider mb-1">Giai đoạn 2 •
+                            19h30 - 21h30</div>
+                        <div class="font-semibold text-base mb-1">Phiên Học Deep Work</div>
+                        <p class="text-xs text-indigo-200">Bấm giờ học sâu và bấm nút "Vượt cám dỗ" mỗi khi kiềm chế
+                            được ý định cầm điện thoại.</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4">
+                        <div class="text-amber-300 font-bold text-xs uppercase tracking-wider mb-1">Giai đoạn 3 • 21h30
+                            Mỗi Tối</div>
+                        <div class="font-semibold text-base mb-1">Đo Lường Độ Tập Trung</div>
+                        <p class="text-xs text-indigo-200">Tổng kết số lần thắng cám dỗ và gửi biểu mẫu đánh giá chất
+                            lượng buổi học.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-12">
+
+        <!-- ==================== GIAI ĐOẠN 1 ==================== -->
+        <section id="stage-1"
+            class="scroll-mt-24 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div
+                class="bg-indigo-50/70 border-b border-indigo-100 px-6 py-4 flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                    <span
+                        class="w-8 h-8 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">1</span>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base sm:text-lg">Giai đoạn 1: Thiết lập Rào cản Số &
+                            Bản đồ Giảm Xao Nhãng</h3>
+                        <p class="text-xs text-slate-500">Tạo lực ma sát để não bộ không tự động mở ứng dụng giải trí
+                            theo quán tính</p>
+                    </div>
+                </div>
+                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-indigo-100 text-indigo-700">Thực hiện 5
+                    phút trước giờ học</span>
+            </div>
+
+            <div class="p-6 space-y-8">
+                <!-- Bước 1.1: Tạo Prompt AI thiết kế môi trường -->
+                <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
+                    <h4 class="font-bold text-slate-800 text-sm sm:text-base mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-robot text-indigo-600"></i>
+                        <span>Bước 1.1: Nhờ AI lập chiến thuật "Cách ly Xao nhãng" cá nhân hóa</span>
+                    </h4>
+                    <p class="text-xs sm:text-sm text-slate-600 mb-3">Nhập các ứng dụng/thói quen hay làm bạn mất tập
+                        trung nhất khi đang ngồi vào bàn học:</p>
+
+                    <div class="flex flex-col sm:flex-row gap-3 mb-3">
+                        <input id="distraction-input" type="text"
+                            placeholder="VD: Hay cầm điện thoại xem tin nhắn Messenger, nghe tiếng ting ting thông báo, mở tab YouTube..."
+                            class="flex-1 px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <button onclick="generateFrictionPrompt()"
+                            class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition shrink-0">
+                            Tạo câu lệnh AI
+                        </button>
+                    </div>
+
+                    <div id="ai-prompt-box"
+                        class="bg-slate-900 text-slate-100 p-4 rounded-lg font-mono text-xs sm:text-sm leading-relaxed whitespace-pre-wrap">
+                        Đóng vai chuyên gia khoa học thần kinh và năng suất học tập cho học sinh THPT. Khi ngồi tự học
+                        buổi tối, tôi thường bị mất tập trung bởi: [Hay cầm điện thoại xem tin nhắn Messenger, lướt
+                        TikTok ngắn, mở tab phụ trên máy tính]. Hãy thiết kế cho tôi quy trình "3 lớp rào cản vật lý &
+                        kỹ thuật số" (Digital Friction) trong 2 giờ tự học và kịch bản xử lý ngay lập tức khi não bộ
+                        xuất hiện cơn thèm kiểm tra điện thoại.</div>
+
+                    <div class="flex flex-wrap gap-2 mt-3">
+                        <button onclick="copyFrictionPrompt()"
+                            class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-xs font-semibold px-3.5 py-2 rounded-lg transition flex items-center gap-1.5">
+                            <i class="fa-regular fa-copy"></i> Sao chép câu lệnh
+                        </button>
+                        <a href="https://gemini.google.com/" target="_blank"
+                            class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-3.5 py-2 rounded-lg transition flex items-center gap-1.5">
+                            Mở Google Gemini <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                        <a href="https://chatgpt.com/" target="_blank"
+                            class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold px-3.5 py-2 rounded-lg transition flex items-center gap-1.5">
+                            Mở ChatGPT <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Bước 1.2: Bảng quy tắc Rào cản 2 cột -->
+                <div>
+                    <h4 class="font-bold text-slate-800 text-sm sm:text-base mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-indigo-600"></i>
+                        <span>Bước 1.2: Thiết lập Cam kết Rào cản (Tự động lưu trên trình duyệt của bạn)</span>
+                    </h4>
+                    <p class="text-xs text-slate-500 mb-4">Liệt kê rõ các nguồn gây nhiễu cần khóa lại và phần thưởng
+                        lành mạnh sau khi hoàn thành ca học.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Cột 1: Nguồn gây nhiễu cần cách ly -->
+                        <div class="bg-rose-50/70 border border-rose-200 rounded-xl p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-bold text-rose-900 text-sm flex items-center gap-2">
+                                    <i class="fa-solid fa-ban text-rose-600"></i> Rào cản Cách ly (Chặn Dopamine rẻ
+                                    tiền)
+                                </span>
+                            </div>
+                            <ul id="list-barriers" class="space-y-2 mb-3 text-sm"></ul>
+                            <div class="flex gap-2">
+                                <input id="input-barriers" type="text"
+                                    placeholder="Thêm rào cản (VD: Để ĐT ở phòng khách)..."
+                                    class="flex-1 px-3 py-1.5 rounded-lg border border-rose-200 text-xs sm:text-sm bg-white">
+                                <button onclick="addRule('barriers')"
+                                    class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Cột 2: Mục tiêu & Phần thưởng sau giờ học -->
+                        <div class="bg-emerald-50/70 border border-emerald-200 rounded-xl p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-bold text-emerald-900 text-sm flex items-center gap-2">
+                                    <i class="fa-solid fa-bullseye text-emerald-600"></i> Mục tiêu Deep Work & Phần
+                                    thưởng cuối buổi
+                                </span>
+                            </div>
+                            <ul id="list-goals" class="space-y-2 mb-3 text-sm"></ul>
+                            <div class="flex gap-2">
+                                <input id="input-goals" type="text" placeholder="Thêm mục tiêu / phần thưởng..."
+                                    class="flex-1 px-3 py-1.5 rounded-lg border border-emerald-200 text-xs sm:text-sm bg-white">
+                                <button onclick="addRule('goals')"
+                                    class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GIAI ĐOẠN 2 ==================== -->
+        <section id="stage-2"
+            class="scroll-mt-24 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div
+                class="bg-emerald-50/70 border-b border-emerald-100 px-6 py-4 flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                    <span
+                        class="w-8 h-8 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">2</span>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base sm:text-lg">Giai đoạn 2: Trạm Thực Hành Deep Work
+                            & Bộ Đếm Vượt Cám Dỗ</h3>
+                        <p class="text-xs text-slate-500">Kích hoạt đồng hồ học sâu và ghi nhận mỗi lần bạn chiến thắng
+                            ý định mở mạng xã hội</p>
+                    </div>
+                </div>
+                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-100 text-emerald-700">19h30 - 21h30
+                    mỗi tối</span>
+            </div>
+
+            <div class="p-6 space-y-6">
+                <!-- Checklist chuẩn bị môi trường -->
+                <div>
+                    <h4 class="font-bold text-slate-800 text-sm mb-3">Danh sách kiểm tra trước khi bấm giờ (Environment
+                        Check):</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm">
+                        <label
+                            class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 text-emerald-600 rounded">
+                            <span>Đã đặt điện thoại cách xa bàn học ít nhất 2 mét (hoặc cất vào cặp)</span>
+                        </label>
+                        <label
+                            class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 text-emerald-600 rounded">
+                            <span>Đã bật chế độ Không làm phiền (Do Not Disturb) trên thiết bị</span>
+                        </label>
+                        <label
+                            class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 text-emerald-600 rounded">
+                            <span>Đã đóng toàn bộ tab Facebook, YouTube, Zalo Web trên máy tính</span>
+                        </label>
+                        <label
+                            class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 text-emerald-600 rounded">
+                            <span>Đã chuẩn bị sẵn tờ giấy nháp để ghi nhanh các suy nghĩ bất chợt</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Khu vực Đồng hồ Deep Work & Bộ đếm Vượt Cám Dỗ -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                    <!-- Đồng hồ bấm giờ -->
+                    <div
+                        class="lg:col-span-7 bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-2xl p-6 flex flex-col justify-between text-center shadow-md">
+                        <div>
+                            <span class="text-xs uppercase tracking-widest text-indigo-300 font-semibold">Đồng hồ Phiên
+                                Học Sâu (Deep Work)</span>
+                            <div class="flex justify-center gap-2 mt-3">
+                                <button onclick="setTimerMode(25)"
+                                    class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-medium transition">Pomodoro
+                                    25p</button>
+                                <button onclick="setTimerMode(45)"
+                                    class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-medium transition">Deep
+                                    Work 45p</button>
+                                <button onclick="setTimerMode(60)"
+                                    class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-medium transition">Siêu
+                                    tập trung 60p</button>
+                            </div>
+                        </div>
+
+                        <div id="timer-display"
+                            class="text-5xl sm:text-6xl font-extrabold tracking-wider my-6 font-mono text-emerald-400">
+                            45:00
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="flex justify-center gap-2.5 flex-wrap">
+                                <button onclick="startDeepWork()"
+                                    class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow">
+                                    <i class="fa-solid fa-play mr-1"></i> Bắt đầu
+                                </button>
+                                <!-- Nút Tạm dừng đã được thêm id="pause-btn" -->
+                                <button id="pause-btn" onclick="togglePauseDeepWork()"
+                                    class="bg-white/15 hover:bg-white/25 text-white font-semibold px-4 py-2.5 rounded-xl text-sm transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-pause" id="pause-icon"></i>
+                                    <span id="pause-text">Tạm dừng</span>
+                                </button>
+                                <button onclick="resetDeepWork()"
+                                    class="bg-white/10 hover:bg-white/20 text-slate-300 font-semibold px-4 py-2.5 rounded-xl text-sm transition">
+                                    <i class="fa-solid fa-rotate-left mr-1"></i> Đặt lại
+                                </button>
+                            </div>
+                            <div class="text-xs text-indigo-200 pt-2">
+                                Tổng thời gian học sâu tích lũy hôm nay: <strong id="deep-minutes"
+                                    class="text-emerald-300 text-sm">0</strong> phút
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trạm ghi nhận Vượt Cám Dỗ (Urge Surfing Tracker) -->
+                    <div
+                        class="lg:col-span-5 bg-amber-50/80 border border-amber-200 rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-bold uppercase tracking-wider text-amber-800">Nút Bấm Kiềm Chế
+                                    Xung Động</span>
+                                <span
+                                    class="px-2.5 py-0.5 rounded-full bg-amber-200/80 text-amber-900 font-bold text-xs">Urge
+                                    Surfing</span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-base mb-2">Bạn vừa muốn cầm điện thoại nhưng đã
+                                dừng lại kịp?</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                                Mỗi khi não bộ thúc giục bạn mở điện thoại/mạng xã hội nhưng bạn nhận diện được và quay
+                                lại bài học, hãy bấm nút bên dưới để cộng 1 điểm "Kháng Dopamine".
+                            </p>
+                        </div>
+
+                        <div class="text-center my-3 py-3 bg-white rounded-xl border border-amber-200 shadow-sm">
+                            <div class="text-xs text-slate-500">Số lần chiến thắng cám dỗ hôm nay</div>
+                            <div id="urge-count" class="text-4xl font-extrabold text-amber-600 my-1">0</div>
+                            <div class="text-[11px] text-emerald-700 font-medium">Mỗi lần bấm = Giữ lại ~10 phút tập
+                                trung</div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <button onclick="recordUrgeVictory()"
+                                class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-xl text-xs sm:text-sm transition shadow-sm flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-fire"></i> +1 Lần Vượt Cám Dỗ!
+                            </button>
+                            <button onclick="resetUrgeCount()" title="Đặt lại bộ đếm ngày mới"
+                                class="bg-white hover:bg-slate-100 text-slate-500 border border-slate-200 px-3 rounded-xl text-xs">
+                                <i class="fa-solid fa-rotate"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GIAI ĐOẠN 3 ==================== -->
+        <section id="stage-3"
+            class="scroll-mt-24 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div
+                class="bg-amber-50/80 border-b border-amber-100 px-6 py-4 flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                    <span
+                        class="w-8 h-8 rounded-lg bg-amber-500 text-white font-bold flex items-center justify-center text-sm shadow-sm">3</span>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base sm:text-lg">Giai đoạn 3: Báo Cáo Chỉ Số Tập Trung
+                            Sâu (21h30 mỗi tối)</h3>
+                        <p class="text-xs text-slate-500">Sử dụng số phút Deep Work và số lần Vượt Cám Dỗ ở Giai đoạn 2
+                            để điền biểu mẫu</p>
+                    </div>
+                </div>
+                <a
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSfl7ThuHthea2Asj9_yUBqJ3FwjscXV2rq128OXeQxBQwhCOQ/viewform">
+                    <span>Mở Form toàn màn hình</span>
+                    <i class="fa-solid fa-up-right-from-square"></i>
+                </a>
+            </div>
+
+            <div class="p-4 sm:p-6">
+                <!-- Thanh tóm tắt kết quả trong ngày để học sinh nhìn vào điền Form -->
+                <div
+                    class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-4 flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm">
+                    <div class="font-medium text-slate-700">
+                        <i class="fa-solid fa-chart-simple text-indigo-600 mr-1.5"></i>
+                        Số liệu của bạn hôm nay để điền vào Form:
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-3 py-1 rounded-lg bg-emerald-100 text-emerald-800 font-bold">
+                            Phút Deep Work: <span id="summary-deep-min">0</span> phút
+                        </span>
+                        <span class="px-3 py-1 rounded-lg bg-amber-100 text-amber-800 font-bold">
+                            Lần vượt cám dỗ: <span id="summary-urge-count">0</span> lần
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Khung nhúng Google Forms (Thay link Form Giải pháp 2 của em vào thuộc tính src bên dưới) -->
+                <div class="w-full rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
+                    <iframe
+                        src="https://docs.google.com/forms/d/e/1FAIpQLSfl7ThuHthea2Asj9_yUBqJ3FwjscXV2rq128OXeQxBQwhCOQ/viewform?embedded=true"
+                        class="w-full h-[680px] border-0" loading="lazy">
+                        Đang tải biểu mẫu...
+                    </iframe>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JAVASCRIPT XỬ LÝ DỮ LIỆU, ĐỒNG HỒ VÀ THANH TRƯỢT CHỐNG GIẬT -->
+    <script>
+        // 1. Quản lý dữ liệu Rào cản & Mục tiêu (LocalStorage riêng cho Giải pháp 2)
+        const defaultRules = {
+            barriers: [
+                "Đặt điện thoại ở chế độ máy bay hoặc để ngoài phòng học từ 19h30 - 21h30",
+                "Đăng xuất khỏi Facebook/TikTok trên trình duyệt máy tính",
+                "Tắt toàn bộ thông báo đẩy (Push Notifications) của các nhóm chat"
+            ],
+            goals: [
+                "Hoàn thành trọn vẹn 2 ca học sâu 45 phút không chạm vào điện thoại",
+                "Giải xong đề ôn tập / bài tập trọng tâm trước 21h15",
+                "Phần thưởng 21h30: Nghe 2 bài nhạc yêu thích hoặc đọc sách nhẹ nhàng"
+            ]
+        };
+
+        let gp2Rules = JSON.parse(localStorage.getItem('gp2_rules')) || defaultRules;
+        let deepWorkMinutes = parseInt(localStorage.getItem('gp2_deep_minutes')) || 0;
+        let urgeVictoryCount = parseInt(localStorage.getItem('gp2_urge_count')) || 0;
+
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-slate-900 text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-xl shadow-lg border border-slate-700 transition-all duration-300';
+            toast.innerText = msg;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 2600);
+        }
+
+        function renderRules() {
+            ['barriers', 'goals'].forEach(type => {
+                const ul = document.getElementById('list-' + type);
+                ul.innerHTML = '';
+                gp2Rules[type].forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'flex items-center justify-between gap-2 bg-white px-3 py-2 rounded-lg border border-slate-200/80 shadow-sm';
+                    li.innerHTML = `<span class="text-slate-700 text-xs sm:text-sm">${item}</span>
+                                    <button onclick="removeRule('${type}', ${index})" class="text-rose-500 hover:text-rose-700 font-bold px-1">×</button>`;
+                    ul.appendChild(li);
+                });
+            });
+            localStorage.setItem('gp2_rules', JSON.stringify(gp2Rules));
+            updateSummaryUI();
+        }
+
+        function addRule(type) {
+            const input = document.getElementById('input-' + type);
+            if (input.value.trim()) {
+                gp2Rules[type].push(input.value.trim());
+                input.value = '';
+                renderRules();
+                showToast('Đã lưu vào bản đồ cam kết!');
+            }
+        }
+
+        function removeRule(type, idx) {
+            gp2Rules[type].splice(idx, 1);
+            renderRules();
+        }
+
+        // 2. Tạo và sao chép câu lệnh AI
+        function generateFrictionPrompt() {
+            const val = document.getElementById('distraction-input').value.trim() || "Hay cầm điện thoại xem tin nhắn, lướt video ngắn, mở tab phụ khi đang học";
+            document.getElementById('ai-prompt-box').innerText =
+                `Đóng vai chuyên gia khoa học thần kinh và năng suất học tập cho học sinh THPT. Khi ngồi tự học buổi tối, tôi thường bị mất tập trung bởi: [${val}]. Hãy thiết kế cho tôi quy trình "3 lớp rào cản vật lý & kỹ thuật số" (Digital Friction) trong 2 giờ tự học và kịch bản xử lý ngay lập tức khi não bộ xuất hiện cơn thèm kiểm tra điện thoại.`;
+            showToast('Đã cập nhật câu lệnh AI!');
+        }
+
+        function copyFrictionPrompt() {
+            navigator.clipboard.writeText(document.getElementById('ai-prompt-box').innerText);
+            showToast('Đã sao chép câu lệnh AI vào bộ nhớ tạm!');
+        }
+
+        // 3. Đồng hồ Deep Work & Bộ đếm Vượt Cám Dỗ
+        // Biến trạng thái đồng hồ
+        let selectedMinutes = 45;
+        let secondsLeft = selectedMinutes * 60;
+        let timerInterval = null;
+        let isPaused = false; // Theo dõi trạng thái tạm dừng
+
+        function updateTimerText() {
+            const m = String(Math.floor(secondsLeft / 60)).padStart(2, '0');
+            const s = String(secondsLeft % 60).padStart(2, '0');
+            document.getElementById('timer-display').innerText = `${m}:${s}`;
+        }
+
+        function setTimerMode(min) {
+            pauseDeepWork();
+            selectedMinutes = min;
+            secondsLeft = min * 60;
+            isPaused = false;
+            resetPauseButtonUI();
+            updateTimerText();
+        }
+
+        function startDeepWork() {
+            if (timerInterval) return; // Nếu đang chạy thì không chồng chéo interval
+
+            isPaused = false;
+            resetPauseButtonUI();
+
+            timerInterval = setInterval(() => {
+                if (secondsLeft > 0) {
+                    secondsLeft--;
+                    updateTimerText();
+                } else {
+                    pauseDeepWork();
+                    deepWorkMinutes += selectedMinutes;
+                    localStorage.setItem('gp2_deep_minutes', deepWorkMinutes);
+                    updateSummaryUI();
+                    alert(`Tuyệt vời! Bạn đã hoàn thành ${selectedMinutes} phút Deep Work liên tục.`);
+                }
+            }, 1000);
+        }
+
+        // Hàm xử lý khi bấm nút Tạm dừng / Tiếp tục
+        function togglePauseDeepWork() {
+            const btnIcon = document.getElementById('pause-icon');
+            const btnText = document.getElementById('pause-text');
+
+            if (!timerInterval && secondsLeft === selectedMinutes * 60) {
+                // Nếu đồng hồ chưa chạy mà bấm Tạm dừng thì không có tác dụng
+                showToast('Đồng hồ chưa bắt đầu!');
+                return;
+            }
+
+            if (!isPaused && timerInterval) {
+                // Đang chạy -> Chuyển sang TẠM DỪNG
+                clearInterval(timerInterval);
+                timerInterval = null;
+                isPaused = true;
+
+                // Đổi giao diện nút thành biểu tượng Tiếp tục (Play)
+                btnIcon.className = "fa-solid fa-play";
+                btnText.innerText = "Tiếp tục";
+                showToast('Đã tạm dừng phiên học');
+            } else if (isPaused) {
+                // Đang tạm dừng -> TIẾP TỤC CHẠY
+                startDeepWork();
+            }
+        }
+
+        function pauseDeepWork() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            isPaused = true;
+            resetPauseButtonUI();
+        }
+
+        function resetPauseButtonUI() {
+            const btnIcon = document.getElementById('pause-icon');
+            const btnText = document.getElementById('pause-text');
+            if (btnIcon && btnText) {
+                btnIcon.className = "fa-solid fa-pause";
+                btnText.innerText = "Tạm dừng";
+            }
+        }
+
+        function resetDeepWork() {
+            pauseDeepWork();
+            secondsLeft = selectedMinutes * 60;
+            isPaused = false;
+            resetPauseButtonUI();
+            updateTimerText();
+        }
+
+        function recordUrgeVictory() {
+            urgeVictoryCount++;
+            localStorage.setItem('gp2_urge_count', urgeVictoryCount);
+            updateSummaryUI();
+            showToast('🔥 +1 lần chiến thắng xung động Dopamine!');
+        }
+
+        function resetUrgeCount() {
+            if (confirm('Đặt lại số liệu thống kê trong ngày về 0?')) {
+                urgeVictoryCount = 0;
+                deepWorkMinutes = 0;
+                localStorage.setItem('gp2_urge_count', 0);
+                localStorage.setItem('gp2_deep_minutes', 0);
+                updateSummaryUI();
+            }
+        }
+
+        function updateSummaryUI() {
+            document.getElementById('deep-minutes').innerText = deepWorkMinutes;
+            document.getElementById('urge-count').innerText = urgeVictoryCount;
+            document.getElementById('summary-deep-min').innerText = deepWorkMinutes;
+            document.getElementById('summary-urge-count').innerText = urgeVictoryCount;
+        }
+
+        // 4. Hiệu ứng Sliding Pill mượt mà (Chống giật khi bấm chuyển tab)
+        document.addEventListener('DOMContentLoaded', () => {
+            renderRules();
+
+            const navPill = document.getElementById('nav-pill');
+            const stepLinks = document.querySelectorAll('.step-link');
+            const stages = ['stage-1', 'stage-2', 'stage-3'];
+
+            let isClickScrolling = false;
+            let scrollTimeout = null;
+            let currentActiveId = null;
+
+            function movePillTo(activeLink) {
+                if (!activeLink || !navPill) return;
+                const targetId = activeLink.getAttribute('data-target');
+                if (currentActiveId === targetId && navPill.style.width) return;
+                currentActiveId = targetId;
+
+                navPill.style.width = `${activeLink.offsetWidth}px`;
+                navPill.style.transform = `translateX(${activeLink.offsetLeft}px)`;
+
+                stepLinks.forEach((link, idx) => {
+                    const badge = link.querySelector('.step-badge');
+                    if (link === activeLink) {
+                        link.classList.remove('text-slate-300');
+                        link.classList.add('text-white');
+                        badge.className = 'step-badge w-5 h-5 rounded-full bg-white text-indigo-700 flex items-center justify-center text-xs font-bold transition-colors duration-300';
+                    } else {
+                        link.classList.remove('text-white');
+                        link.classList.add('text-slate-300');
+                        const defaultColors = ['bg-indigo-500 text-white', 'bg-emerald-600 text-white', 'bg-amber-500 text-white'];
+                        badge.className = `step-badge w-5 h-5 rounded-full ${defaultColors[idx]} flex items-center justify-center text-xs font-bold transition-colors duration-300`;
+                    }
+                });
+            }
+
+            function onScrollUpdate() {
+                if (isClickScrolling) return;
+                let detectedStageId = stages[0];
+                const scrollThreshold = window.scrollY + 240;
+
+                stages.forEach(id => {
+                    const section = document.getElementById(id);
+                    if (section && section.offsetTop <= scrollThreshold) {
+                        detectedStageId = id;
+                    }
+                });
+
+                const activeLink = document.querySelector(`.step-link[data-target="${detectedStageId}"]`);
+                movePillTo(activeLink);
+            }
+
+            stepLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    isClickScrolling = true;
+                    movePillTo(link);
+                    clearTimeout(scrollTimeout);
+                    scrollTimeout = setTimeout(() => {
+                        isClickScrolling = false;
+                    }, 750);
+                });
+            });
+
+            window.addEventListener('resize', () => {
+                currentActiveId = null;
+                onScrollUpdate();
+            });
+
+            window.addEventListener('scroll', onScrollUpdate, { passive: true });
+            setTimeout(onScrollUpdate, 50);
+        });
+    </script>
+</body>
+
+</html>
