@@ -1,66 +1,111 @@
 <!DOCTYPE html>
 <html lang="vi" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cấu Phần 1: Bản Đồ Eisenhower & Trạm Deep Work</title>
+    <title>Bản Đồ Eisenhower & Trạm Deep Work</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc !important; color: #1e293b; margin: 0; }
-        header.sticky { background-color: rgba(15, 23, 42, 0.96) !important; color: #94a3b8 !important; }
-        section.bg-gradient-to-br { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #0f172a 100%) !important; color: #ffffff !important; }
-        #nav-pill { background-color: #4f46e5 !important; }
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc !important;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        header.sticky {
+            background-color: rgba(15, 23, 42, 0.96) !important;
+            color: #94a3b8 !important;
+        }
+
+        section.bg-gradient-to-br {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #0f172a 100%) !important;
+            color: #ffffff !important;
+        }
+
+        #nav-pill {
+            background-color: #4f46e5 !important;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
     </style>
 </head>
+
 <body class="text-slate-800 antialiased selection:bg-indigo-500 selection:text-white">
 
     <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
     <!-- BỘ ĐẾM THỜI GIAN TRUY CẬP WEB (Dán vào bên trong thanh Header) -->
-    <div class="flex items-center gap-2.5 bg-slate-800/90 border border-slate-700 px-3 py-1.5 rounded-xl text-xs shrink-0 shadow-sm">
-    <span class="relative flex h-2.5 w-2.5">
-        <span id="online-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-        <span id="online-dot" class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-    </span>
-    <div class="text-slate-300 flex items-center gap-1.5">
-        <i class="fa-regular fa-clock text-indigo-400"></i>
-        <span>Phiên: <strong id="session-time" class="text-white font-mono">00:00</strong></span>
-        <span class="text-slate-600">|</span>
-        <span title="Tổng thời gian tích lũy trên hệ thống">Tổng: <strong id="total-web-time" class="text-emerald-400 font-mono">0p 00s</strong></span>
-    </div>
-    <button onclick="resetWebTime()" title="Đặt lại bộ đếm thời gian" class="text-slate-500 hover:text-rose-400 transition ml-1">
-        <i class="fa-solid fa-rotate-right text-[11px]"></i>
-    </button>
+    <div
+        class="flex items-center gap-2.5 bg-slate-800/90 border border-slate-700 px-3 py-1.5 rounded-xl text-xs shrink-0 shadow-sm">
+        <span class="relative flex h-2.5 w-2.5">
+            <span id="online-ping"
+                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span id="online-dot" class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+        </span>
+        <div class="text-slate-300 flex items-center gap-1.5">
+            <i class="fa-regular fa-clock text-indigo-400"></i>
+            <span>Phiên: <strong id="session-time" class="text-white font-mono">00:00</strong></span>
+            <span class="text-slate-600">|</span>
+            <span title="Tổng thời gian tích lũy trên hệ thống">Tổng: <strong id="total-web-time"
+                    class="text-emerald-400 font-mono">0p 00s</strong></span>
+        </div>
+        <button onclick="resetWebTime()" title="Đặt lại bộ đếm thời gian"
+            class="text-slate-500 hover:text-rose-400 transition ml-1">
+            <i class="fa-solid fa-rotate-right text-[11px]"></i>
+        </button>
     </div>
     <!-- HEADER STICKY VỚI SLIDING PILL -->
-    <header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-md text-slate-400 py-3.5 px-4 sm:px-6 border-b border-slate-800 shadow-lg">
+    <header
+        class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-md text-slate-400 py-3.5 px-4 sm:px-6 border-b border-slate-800 shadow-lg">
         <div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3">
             <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 block">Hệ thống Giải pháp Thực nghiệm • Cấu phần 1 (2.3.1)</span>
-                <h1 class="font-bold text-white text-sm sm:text-base leading-tight mt-0.5">Hạ Tầng Công Cụ Số: Bản Đồ Ưu Tiên Eisenhower & Trạm Deep Work</h1>
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 block">Hệ thống Giải pháp Thực
+                    nghiệm • Cấu phần 1 (2.3.1)</span>
+                <h1 class="font-bold text-white text-sm sm:text-base leading-tight mt-0.5">Hạ Tầng Công Cụ Số: Bản Đồ Ưu
+                    Tiên Eisenhower & Trạm Deep Work</h1>
             </div>
-            
-            <nav id="stepper-nav" class="relative flex items-center gap-1 sm:gap-2 bg-slate-800/90 border border-slate-700 p-1.5 rounded-xl w-full lg:w-auto justify-between lg:justify-end overflow-x-auto">
-                <div id="nav-pill" class="absolute top-1.5 bottom-1.5 left-0 bg-indigo-600 rounded-lg shadow-sm transition-all duration-300 ease-out pointer-events-none z-0"></div>
 
-                <a href="#stage-1" data-target="stage-1" class="step-link relative z-10 flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-white transition-colors duration-300 whitespace-nowrap">
-                    <span class="step-badge w-5 h-5 rounded-full bg-white text-indigo-700 flex items-center justify-center text-xs font-bold">1</span>
+            <nav id="stepper-nav"
+                class="relative flex items-center gap-1 sm:gap-2 bg-slate-800/90 border border-slate-700 p-1.5 rounded-xl w-full lg:w-auto justify-between lg:justify-end overflow-x-auto">
+                <div id="nav-pill"
+                    class="absolute top-1.5 bottom-1.5 left-0 bg-indigo-600 rounded-lg shadow-sm transition-all duration-300 ease-out pointer-events-none z-0">
+                </div>
+
+                <a href="#stage-1" data-target="stage-1"
+                    class="step-link relative z-10 flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-white transition-colors duration-300 whitespace-nowrap">
+                    <span
+                        class="step-badge w-5 h-5 rounded-full bg-white text-indigo-700 flex items-center justify-center text-xs font-bold">1</span>
                     <span>AI & Ma trận Eisenhower</span>
                 </a>
                 <i class="fa-solid fa-chevron-right text-slate-500 text-xs hidden sm:inline relative z-10"></i>
-                <a href="#stage-2" data-target="stage-2" class="step-link relative z-10 flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-300 hover:text-white transition-colors duration-300 whitespace-nowrap">
-                    <span class="step-badge w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold">2</span>
+                <a href="#stage-2" data-target="stage-2"
+                    class="step-link relative z-10 flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-300 hover:text-white transition-colors duration-300 whitespace-nowrap">
+                    <span
+                        class="step-badge w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold">2</span>
                     <span>Trạm Deep Work</span>
                 </a>
                 <i class="fa-solid fa-chevron-right text-slate-500 text-xs hidden sm:inline relative z-10"></i>
-                <a href="#stage-3" data-target="stage-3" class="step-link relative z-10 flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-300 hover:text-white transition-colors duration-300 whitespace-nowrap">
-                    <span class="step-badge w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold">3</span>
+                <a href="#stage-3" data-target="stage-3"
+                    class="step-link relative z-10 flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-300 hover:text-white transition-colors duration-300 whitespace-nowrap">
+                    <span
+                        class="step-badge w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold">3</span>
                     <span>Đồng bộ Chỉ số</span>
                 </a>
             </nav>
@@ -68,35 +113,42 @@
     </header>
 
     <!-- HERO BANNER -->
-    <section class="bg-gradient-to-br from-indigo-950 via-indigo-900 to-slate-900 text-white py-10 sm:py-14 px-4 sm:px-6 relative overflow-hidden">
+    <section
+        class="bg-gradient-to-br from-indigo-950 via-indigo-900 to-slate-900 text-white py-10 sm:py-14 px-4 sm:px-6 relative overflow-hidden">
         <div class="max-w-6xl mx-auto relative z-10">
             <div class="max-w-3xl">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs sm:text-sm font-medium mb-4">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs sm:text-sm font-medium mb-4">
                     <i class="fa-solid fa-microchip"></i>
                     <span>Cấu phần 1: Nền tảng công nghệ hỗ trợ (Hạ tầng số)</span>
                 </div>
                 <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight mb-4">
-                    Trợ Lý AI Phân Bổ Thời Gian & Không Gian Tập Trung Sâu Deep Work
+                    Cổng Thực Hành Giải Pháp 1 : Bản Đồ Eisenhower & Trạm Deep Work
                 </h2>
                 <p class="text-indigo-100 text-sm sm:text-base leading-relaxed mb-6">
-                    Giải quyết trực diện hai điểm nghẽn của học sinh THPT: sự bối rối khi sắp xếp mục tiêu học tập (thông qua AI & Ma trận Eisenhower) và sự đứt gãy chú ý do xung động cầm điện thoại (thông qua Trạm Deep Work & nút bấm kháng Dopamine).
+                    Giải quyết trực diện hai điểm nghẽn của học sinh THPT: sự bối rối khi sắp xếp mục tiêu học tập
+                    (thông qua AI & Ma trận Eisenhower) và sự đứt gãy chú ý do xung động cầm điện thoại (thông qua Trạm
+                    Deep Work & nút bấm kháng Dopamine).
                 </p>
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 text-left">
                     <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4">
                         <div class="text-emerald-400 font-bold text-xs uppercase mb-1">Phân hệ 1 • Lập kế hoạch</div>
                         <div class="font-semibold text-base mb-1">AI & Ma trận Eisenhower</div>
-                        <p class="text-xs text-indigo-200">Tách bạch mục tiêu học tập cốt lõi và Danh sách từ bỏ (JOMO List).</p>
+                        <p class="text-xs text-indigo-200">Tách bạch mục tiêu học tập cốt lõi và Danh sách từ bỏ (JOMO
+                            List).</p>
                     </div>
                     <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4">
                         <div class="text-cyan-300 font-bold text-xs uppercase mb-1">Phân hệ 2 • Thực học</div>
                         <div class="font-semibold text-base mb-1">Trạm Deep Work (25p/45p/60p)</div>
-                        <p class="text-xs text-indigo-200">Kiểm tra môi trường cách ly điện thoại và bấm giờ học tập trung sâu.</p>
+                        <p class="text-xs text-indigo-200">Kiểm tra môi trường cách ly điện thoại và bấm giờ học tập
+                            trung sâu.</p>
                     </div>
                     <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4">
                         <div class="text-amber-300 font-bold text-xs uppercase mb-1">Phân hệ 3 • Hành vi</div>
                         <div class="font-semibold text-base mb-1">Nút bấm "+1 Vượt Cám Dỗ"</div>
-                        <p class="text-xs text-indigo-200">Ghi nhận điểm kháng Dopamine mỗi khi kiềm chế xung động mở mạng xã hội.</p>
+                        <p class="text-xs text-indigo-200">Ghi nhận điểm kháng Dopamine mỗi khi kiềm chế xung động mở
+                            mạng xã hội.</p>
                     </div>
                 </div>
             </div>
@@ -106,13 +158,18 @@
     <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-12">
 
         <!-- PHẦN 1: TRỢ LÝ AI & MA TRẬN EISENHOWER -->
-        <section id="stage-1" class="scroll-mt-24 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div class="bg-indigo-50/70 border-b border-indigo-100 px-6 py-4 flex items-center justify-between flex-wrap gap-2">
+        <section id="stage-1"
+            class="scroll-mt-24 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div
+                class="bg-indigo-50/70 border-b border-indigo-100 px-6 py-4 flex items-center justify-between flex-wrap gap-2">
                 <div class="flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-sm">1</span>
+                    <span
+                        class="w-8 h-8 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-sm">1</span>
                     <div>
-                        <h3 class="font-bold text-slate-900 text-base sm:text-lg">Phân hệ 1: Trợ lý AI & Bản đồ Ưu tiên Eisenhower</h3>
-                        <p class="text-xs text-slate-500">Tự động hóa phân loại công việc tuần và thiết lập Danh sách từ bỏ (JOMO List)</p>
+                        <h3 class="font-bold text-slate-900 text-base sm:text-lg">Phân hệ 1: Trợ lý AI & Bản đồ Ưu tiên
+                            Eisenhower</h3>
+                        <p class="text-xs text-slate-500">Tự động hóa phân loại công việc tuần và thiết lập Danh sách từ
+                            bỏ (JOMO List)</p>
                     </div>
                 </div>
             </div>
@@ -125,16 +182,31 @@
                         <span>Công cụ tạo câu lệnh AI (Prompt Engine) phân loại nhiệm vụ</span>
                     </h4>
                     <div class="flex flex-col sm:flex-row gap-3 mb-3">
-                        <input id="tasks-input" type="text" placeholder="Nhập các việc cần làm tuần này (VD: Ôn thi Lý chương 2, làm đề Toán, trả lời tin nhắn nhóm, lướt TikTok...)" class="flex-1 px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <button onclick="generateEisenhowerPrompt()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition shrink-0">Tạo Prompt AI</button>
+                        <input id="tasks-input" type="text"
+                            placeholder="Nhập các việc cần làm tuần này (VD: Ôn thi Lý chương 2, làm đề Toán, trả lời tin nhắn nhóm, lướt TikTok...)"
+                            class="flex-1 px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <button onclick="generateEisenhowerPrompt()"
+                            class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition shrink-0">Tạo
+                            Prompt AI</button>
                     </div>
-                    <div id="prompt-output" class="bg-slate-900 text-slate-100 p-4 rounded-lg font-mono text-xs sm:text-sm leading-relaxed whitespace-pre-wrap">Đóng vai cố vấn quản lý thời gian cho học sinh lớp 11. Hãy giúp tôi phân loại danh sách công việc sau đây vào 4 ô của Ma trận Eisenhower (1. Quan trọng & Khẩn cấp, 2. Quan trọng & Không khẩn cấp - Mục tiêu cốt lõi, 3. Không quan trọng & Khẩn cấp, 4. Không quan trọng & Không khẩn cấp - Danh sách từ bỏ JOMO List): [Ôn thi Vật lý, hoàn thành bài tập Toán, xem thông báo nhóm chat, lướt video ngắn giải trí].</div>
+                    <div id="prompt-output"
+                        class="bg-slate-900 text-slate-100 p-4 rounded-lg font-mono text-xs sm:text-sm leading-relaxed whitespace-pre-wrap">
+                        Đóng vai cố vấn quản lý thời gian cho học sinh lớp 11. Hãy giúp tôi phân loại danh sách công
+                        việc sau đây vào 4 ô của Ma trận Eisenhower (1. Quan trọng & Khẩn cấp, 2. Quan trọng & Không
+                        khẩn cấp - Mục tiêu cốt lõi, 3. Không quan trọng & Khẩn cấp, 4. Không quan trọng & Không khẩn
+                        cấp - Danh sách từ bỏ JOMO List): [Ôn thi Vật lý, hoàn thành bài tập Toán, xem thông báo nhóm
+                        chat, lướt video ngắn giải trí].</div>
                     <div class="flex flex-wrap gap-2 mt-3">
-                        <button onclick="copyPrompt()" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-xs font-semibold px-3.5 py-2 rounded-lg transition flex items-center gap-1.5">
+                        <button onclick="copyPrompt()"
+                            class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-xs font-semibold px-3.5 py-2 rounded-lg transition flex items-center gap-1.5">
                             <i class="fa-regular fa-copy"></i> Sao chép câu lệnh
                         </button>
-                        <a href="https://gemini.google.com/" target="_blank" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-3.5 py-2 rounded-lg transition">Mở Google Gemini ↗</a>
-                        <a href="https://chatgpt.com/" target="_blank" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold px-3.5 py-2 rounded-lg transition">Mở ChatGPT ↗</a>
+                        <a href="https://gemini.google.com/" target="_blank"
+                            class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-3.5 py-2 rounded-lg transition">Mở
+                            Google Gemini ↗</a>
+                        <a href="https://chatgpt.com/" target="_blank"
+                            class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold px-3.5 py-2 rounded-lg transition">Mở
+                            ChatGPT ↗</a>
                     </div>
                 </div>
 
@@ -144,12 +216,14 @@
                     <div class="bg-rose-50/70 border border-rose-200 rounded-xl p-4">
                         <div class="font-bold text-rose-900 text-sm mb-2 flex items-center justify-between">
                             <span>1. Quan trọng & Khẩn cấp (Làm ngay)</span>
-                            <span class="text-[11px] bg-rose-200 text-rose-800 px-2 py-0.5 rounded">Do First</span>
+                            <span class="text-[11px] bg-rose-200 text-rose-800 px-2 py-0.5 rounded">Làm ngay</span>
                         </div>
                         <ul id="list-q1" class="space-y-1.5 mb-3 text-xs sm:text-sm"></ul>
                         <div class="flex gap-2">
-                            <input id="input-q1" type="text" placeholder="Thêm việc cần làm ngay..." class="flex-1 px-3 py-1.5 rounded-lg border border-rose-200 text-xs bg-white">
-                            <button onclick="addTask('q1')" class="bg-rose-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold">+</button>
+                            <input id="input-q1" type="text" placeholder="Thêm việc cần làm ngay..."
+                                class="flex-1 px-3 py-1.5 rounded-lg border border-rose-200 text-xs bg-white">
+                            <button onclick="addTask('q1')"
+                                class="bg-rose-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold">+</button>
                         </div>
                     </div>
 
@@ -157,12 +231,15 @@
                     <div class="bg-emerald-50/70 border border-emerald-200 rounded-xl p-4">
                         <div class="font-bold text-emerald-900 text-sm mb-2 flex items-center justify-between">
                             <span>2. Quan trọng & Không khẩn cấp (Mục tiêu cốt lõi)</span>
-                            <span class="text-[11px] bg-emerald-200 text-emerald-800 px-2 py-0.5 rounded">Deep Work</span>
+                            <span class="text-[11px] bg-emerald-200 text-emerald-800 px-2 py-0.5 rounded">Tập trung
+                                sâu</span>
                         </div>
                         <ul id="list-q2" class="space-y-1.5 mb-3 text-xs sm:text-sm"></ul>
                         <div class="flex gap-2">
-                            <input id="input-q2" type="text" placeholder="Thêm mục tiêu học tập dài hạn..." class="flex-1 px-3 py-1.5 rounded-lg border border-emerald-200 text-xs bg-white">
-                            <button onclick="addTask('q2')" class="bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold">+</button>
+                            <input id="input-q2" type="text" placeholder="Thêm mục tiêu học tập dài hạn..."
+                                class="flex-1 px-3 py-1.5 rounded-lg border border-emerald-200 text-xs bg-white">
+                            <button onclick="addTask('q2')"
+                                class="bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold">+</button>
                         </div>
                     </div>
 
@@ -170,12 +247,14 @@
                     <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-4">
                         <div class="font-bold text-amber-900 text-sm mb-2 flex items-center justify-between">
                             <span>3. Không quan trọng & Khẩn cấp (Giảm thiểu/Xử lý nhanh)</span>
-                            <span class="text-[11px] bg-amber-200 text-amber-800 px-2 py-0.5 rounded">Minimize</span>
+                            <span class="text-[11px] bg-amber-200 text-amber-800 px-2 py-0.5 rounded">Giảm thiểu</span>
                         </div>
                         <ul id="list-q3" class="space-y-1.5 mb-3 text-xs sm:text-sm"></ul>
                         <div class="flex gap-2">
-                            <input id="input-q3" type="text" placeholder="Thêm việc phát sinh..." class="flex-1 px-3 py-1.5 rounded-lg border border-amber-200 text-xs bg-white">
-                            <button onclick="addTask('q3')" class="bg-amber-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold">+</button>
+                            <input id="input-q3" type="text" placeholder="Thêm việc phát sinh..."
+                                class="flex-1 px-3 py-1.5 rounded-lg border border-amber-200 text-xs bg-white">
+                            <button onclick="addTask('q3')"
+                                class="bg-amber-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold">+</button>
                         </div>
                     </div>
 
@@ -183,12 +262,14 @@
                     <div class="bg-indigo-50/70 border border-indigo-200 rounded-xl p-4">
                         <div class="font-bold text-indigo-900 text-sm mb-2 flex items-center justify-between">
                             <span>4. Danh sách chủ động từ bỏ (JOMO List / Not-To-Do)</span>
-                            <span class="text-[11px] bg-indigo-200 text-indigo-800 px-2 py-0.5 rounded">Eliminate</span>
+                            <span class="text-[11px] bg-indigo-200 text-indigo-800 px-2 py-0.5 rounded">Loại bỏ</span>
                         </div>
                         <ul id="list-q4" class="space-y-1.5 mb-3 text-xs sm:text-sm"></ul>
                         <div class="flex gap-2">
-                            <input id="input-q4" type="text" placeholder="Thêm thói quen FOMO cần từ bỏ..." class="flex-1 px-3 py-1.5 rounded-lg border border-indigo-200 text-xs bg-white">
-                            <button onclick="addTask('q4')" class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold">+</button>
+                            <input id="input-q4" type="text" placeholder="Thêm thói quen FOMO cần từ bỏ..."
+                                class="flex-1 px-3 py-1.5 rounded-lg border border-indigo-200 text-xs bg-white">
+                            <button onclick="addTask('q4')"
+                                class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold">+</button>
                         </div>
                     </div>
                 </div>
@@ -196,13 +277,18 @@
         </section>
 
         <!-- PHẦN 2: TRẠM DEEP WORK & NÚT BẤM KHÁNG DOPAMINE -->
-        <section id="stage-2" class="scroll-mt-24 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div class="bg-emerald-50/70 border-b border-emerald-100 px-6 py-4 flex items-center justify-between flex-wrap gap-2">
+        <section id="stage-2"
+            class="scroll-mt-24 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div
+                class="bg-emerald-50/70 border-b border-emerald-100 px-6 py-4 flex items-center justify-between flex-wrap gap-2">
                 <div class="flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-sm">2</span>
+                    <span
+                        class="w-8 h-8 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-sm">2</span>
                     <div>
-                        <h3 class="font-bold text-slate-900 text-base sm:text-lg">Phân hệ 2: Trạm Deep Work & Nút Bấm Kháng Dopamine</h3>
-                        <p class="text-xs text-slate-500">Kiểm tra môi trường học tập và ghi nhận hành vi vượt cám dỗ trong khung giờ vàng 19h30 - 21h30</p>
+                        <h3 class="font-bold text-slate-900 text-base sm:text-lg">Phân hệ 2: Trạm Deep Work & Nút Bấm
+                            Kháng Dopamine</h3>
+                        <p class="text-xs text-slate-500">Kiểm tra môi trường học tập và ghi nhận hành vi vượt cám dỗ
+                            trong khung giờ vàng 19h30 - 21h30</p>
                     </div>
                 </div>
             </div>
@@ -210,21 +296,26 @@
             <div class="p-6 space-y-6">
                 <!-- Environment Check -->
                 <div>
-                    <h4 class="font-bold text-slate-800 text-sm mb-3">Bảng kiểm tra môi trường trước khi bấm giờ (Environment Check):</h4>
+                    <h4 class="font-bold text-slate-800 text-sm mb-3">Bảng kiểm tra môi trường trước khi bấm giờ
+                        (Environment Check):</h4>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm">
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                        <label
+                            class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
                             <input type="checkbox" class="w-4 h-4 text-emerald-600 rounded">
                             <span>Đã đặt điện thoại cách xa bàn học ít nhất 2 mét</span>
                         </label>
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                        <label
+                            class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
                             <input type="checkbox" class="w-4 h-4 text-emerald-600 rounded">
                             <span>Đã bật chế độ Không làm phiền (Do Not Disturb)</span>
                         </label>
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                        <label
+                            class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
                             <input type="checkbox" class="w-4 h-4 text-emerald-600 rounded">
                             <span>Đã đóng toàn bộ tab mạng xã hội ngoài luồng</span>
                         </label>
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                        <label
+                            class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
                             <input type="checkbox" class="w-4 h-4 text-emerald-600 rounded">
                             <span>Đã chọn rõ 1 nhiệm vụ từ Ô số 1 hoặc Ô số 2 của Ma trận Eisenhower</span>
                         </label>
@@ -233,60 +324,82 @@
 
                 <!-- Đồng hồ & Nút bấm Vượt cám dỗ -->
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <div class="lg:col-span-7 bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-2xl p-6 flex flex-col justify-between text-center shadow-md">
+                    <div
+                        class="lg:col-span-7 bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-2xl p-6 flex flex-col justify-between text-center shadow-md">
                         <div>
-                            <span class="text-xs uppercase tracking-widest text-indigo-300 font-semibold">Đồng hồ Phiên Học Sâu (Deep Work)</span>
+                            <span class="text-xs uppercase tracking-widest text-indigo-300 font-semibold">Đồng hồ Phiên
+                                Học Sâu (Deep Work)</span>
                             <div class="flex justify-center gap-2 mt-3">
-                                <button onclick="setTimerMode(25)" class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-medium transition">Pomodoro 25p</button>
-                                <button onclick="setTimerMode(45)" class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-medium transition">Deep Work 45p</button>
-                                <button onclick="setTimerMode(60)" class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-medium transition">Siêu tập trung 60p</button>
+                                <button onclick="setTimerMode(25)"
+                                    class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-medium transition">Pomodoro
+                                    25p</button>
+                                <button onclick="setTimerMode(45)"
+                                    class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-medium transition">Deep
+                                    Work 45p</button>
+                                <button onclick="setTimerMode(60)"
+                                    class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-medium transition">Siêu
+                                    tập trung 60p</button>
                             </div>
                         </div>
 
-                        <div id="timer-display" class="text-5xl sm:text-6xl font-extrabold tracking-wider my-6 font-mono text-emerald-400">45:00</div>
+                        <div id="timer-display"
+                            class="text-5xl sm:text-6xl font-extrabold tracking-wider my-6 font-mono text-emerald-400">
+                            45:00</div>
 
                         <div class="space-y-3">
                             <div class="flex justify-center gap-2.5 flex-wrap">
-                                <button onclick="startDeepWork()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow">
+                                <button onclick="startDeepWork()"
+                                    class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow">
                                     <i class="fa-solid fa-play mr-1"></i> Bắt đầu
                                 </button>
-                                <button id="pause-btn" onclick="togglePauseDeepWork()" class="bg-white/15 hover:bg-white/25 text-white font-semibold px-4 py-2.5 rounded-xl text-sm transition flex items-center gap-1.5">
+                                <button id="pause-btn" onclick="togglePauseDeepWork()"
+                                    class="bg-white/15 hover:bg-white/25 text-white font-semibold px-4 py-2.5 rounded-xl text-sm transition flex items-center gap-1.5">
                                     <i class="fa-solid fa-pause" id="pause-icon"></i>
                                     <span id="pause-text">Tạm dừng</span>
                                 </button>
-                                <button onclick="resetDeepWork()" class="bg-white/10 hover:bg-white/20 text-slate-300 font-semibold px-4 py-2.5 rounded-xl text-sm transition">
+                                <button onclick="resetDeepWork()"
+                                    class="bg-white/10 hover:bg-white/20 text-slate-300 font-semibold px-4 py-2.5 rounded-xl text-sm transition">
                                     <i class="fa-solid fa-rotate-left mr-1"></i> Đặt lại
                                 </button>
                             </div>
                             <div class="text-xs text-indigo-200 pt-2">
-                                Tổng thời gian học sâu tích lũy: <strong id="deep-minutes" class="text-emerald-300 text-sm">0</strong> phút
+                                Tổng thời gian học sâu tích lũy: <strong id="deep-minutes"
+                                    class="text-emerald-300 text-sm">0</strong> phút
                             </div>
                         </div>
                     </div>
 
-                    <div class="lg:col-span-5 bg-amber-50/80 border border-amber-200 rounded-2xl p-6 flex flex-col justify-between">
+                    <div
+                        class="lg:col-span-5 bg-amber-50/80 border border-amber-200 rounded-2xl p-6 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-bold uppercase tracking-wider text-amber-800">Củng cố tích cực (Positive Reinforcement)</span>
-                                <span class="px-2.5 py-0.5 rounded-full bg-amber-200/80 text-amber-900 font-bold text-xs">Kháng Dopamine</span>
+                                <span class="text-xs font-bold uppercase tracking-wider text-amber-800">Củng cố tích cực
+                                    (Positive Reinforcement)</span>
+                                <span
+                                    class="px-2.5 py-0.5 rounded-full bg-amber-200/80 text-amber-900 font-bold text-xs">Kháng
+                                    Dopamine</span>
                             </div>
                             <h4 class="font-bold text-slate-900 text-base mb-2">Nút tương tác "+1 Lần Vượt Cám Dỗ"</h4>
                             <p class="text-xs text-slate-600 leading-relaxed mb-4">
-                                Mỗi khi não bộ xuất hiện xung động muốn kiểm tra thông báo điện thoại nhưng bạn kịp thời nhận diện và quay lại bài học, hãy bấm nút dưới đây.
+                                Mỗi khi não bộ xuất hiện xung động muốn kiểm tra thông báo điện thoại nhưng bạn kịp thời
+                                nhận diện và quay lại bài học, hãy bấm nút dưới đây.
                             </p>
                         </div>
 
                         <div class="text-center my-3 py-3 bg-white rounded-xl border border-amber-200 shadow-sm">
                             <div class="text-xs text-slate-500">Số lần chiến thắng cám dỗ tích lũy</div>
                             <div id="urge-count" class="text-4xl font-extrabold text-amber-600 my-1">0</div>
-                            <div class="text-[11px] text-emerald-700 font-medium">Quy đổi: Giữ lại ~<span id="saved-minutes">0</span> phút tập trung</div>
+                            <div class="text-[11px] text-emerald-700 font-medium">Quy đổi: Giữ lại ~<span
+                                    id="saved-minutes">0</span> phút tập trung</div>
                         </div>
 
                         <div class="flex gap-2">
-                            <button onclick="recordUrgeVictory()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-xl text-xs sm:text-sm transition shadow-sm flex items-center justify-center gap-2">
+                            <button onclick="recordUrgeVictory()"
+                                class="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-xl text-xs sm:text-sm transition shadow-sm flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-fire"></i> +1 Lần Vượt Cám Dỗ!
                             </button>
-                            <button onclick="resetStats()" title="Đặt lại bộ đếm" class="bg-white hover:bg-slate-100 text-slate-500 border border-slate-200 px-3 rounded-xl text-xs">
+                            <button onclick="resetStats()" title="Đặt lại bộ đếm"
+                                class="bg-white hover:bg-slate-100 text-slate-500 border border-slate-200 px-3 rounded-xl text-xs">
                                 <i class="fa-solid fa-rotate"></i>
                             </button>
                         </div>
@@ -299,10 +412,13 @@
         <section id="stage-3" class="scroll-mt-24 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div>
-                    <h3 class="font-bold text-slate-900 text-base sm:text-lg">Phân hệ 3: Trích xuất Chỉ số Định lượng sang Nhật ký JOMO (21h30)</h3>
-                    <p class="text-xs sm:text-sm text-slate-500 mt-1">Sử dụng các chỉ số đã đo lường tự động bên dưới để ghi nhận vào Sổ tay Kế hoạch Vượt cám dỗ & Nhật ký JOMO cuối ngày.</p>
+                    <h3 class="font-bold text-slate-900 text-base sm:text-lg">Phân hệ 3: Trích xuất Chỉ số Định lượng
+                        sang Nhật ký JOMO (21h30)</h3>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1">Sử dụng các chỉ số đã đo lường tự động bên dưới để
+                        ghi nhận vào Sổ tay Kế hoạch Vượt cám dỗ & Nhật ký JOMO cuối ngày.</p>
                 </div>
-                <a href="https://andeptryqua1908.github.io/nhatkijomo/" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl transition shadow flex items-center gap-2 shrink-0">
+                <a href="https://andeptryqua1908.github.io/nhatkijomo/" target="_blank"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl transition shadow flex items-center gap-2 shrink-0">
                     <span>Chuyển sang Web 2: Nhật ký JOMO</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
@@ -522,6 +638,7 @@
         });
     </script>
 </body>
+
 </html>
 
 <script>
@@ -564,7 +681,7 @@
             }
         }
 
-    
+
         setInterval(() => {
             if (!document.hidden) {
                 sessionSeconds++;
@@ -587,7 +704,7 @@
         });
 
         // Hàm đặt lại thời gian nếu muốn đo chu kỳ mới
-        window.resetWebTime = function() {
+        window.resetWebTime = function () {
             if (confirm('Bạn có muốn đặt lại bộ đếm thời gian truy cập web về 00:00 không?')) {
                 sessionSeconds = 0;
                 totalWebSeconds = 0;
@@ -596,7 +713,7 @@
             }
         };
 
-       
+
         updateTimeUI();
     })();
 </script>
